@@ -6,10 +6,10 @@ import pandas as pd
 def load_data():
     return pd.read_excel('https://raw.githubusercontent.com/seokjinwoo/budget_2024/master/budget_2024_treemap.xlsx')
 
-
-
-
 df = load_data()
+
+# Set the title
+st.title("2024년 예산 현황")
 
 # Create a treemap
 fig = px.treemap(df, path=['department','program'], values='budget2024')
