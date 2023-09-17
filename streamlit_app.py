@@ -12,7 +12,7 @@ df = load_data()
 st.title("2024년 예산 현황")
 
 # Create a treemap
-fig = px.treemap(df, path=['department','program'], values='budget2024')
+fig = px.treemap(df, path=['department','program','policy'], values='budget2024')
 
 
 
