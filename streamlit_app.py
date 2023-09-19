@@ -70,28 +70,35 @@ elif page == "2023년 국세 진도율":
     ax.set_ylabel('Revenue progress rate (%)')
     ax.legend()
     st.pyplot(fig)
+      
     
 elif page == "2023년 국세 수입 금액(3D)":    
     st.title("국세 수입 추이")
     selected_cat = st.selectbox("세목:", df3['cat'].unique())
     filtered_data = df3[df3['cat'] == selected_cat]
     
-    # year가 2023이 아닌 데이터에 대한 라인
-    fig = px.line_3d(filtered_data[filtered_data['year'] != 2023], 
-                 x='year', 
-                 y='month', 
-                 z='amount', 
-                 color='year')
+    fig = go.Figure()
 
-    # year가 2023인 데이터에 대한 라인 (눈에 띄게 표시)
-    fig.add_trace(go.Scatter3d(
-    x=filtered_data[filtered_data['year'] == 2023]['year'],
-    y=filtered_data[filtered_data['year'] == 2023]['month'],
-    z=filtered_data[filtered_data['year'] == 2023]['amount'],
-    mode='lines',
-    line=dict(color='red', width=5),
-    name='2023'
-    ))
+    # year별로 데이터를 필터링하여 각각의 라인을 그림
+    for year in filtered_data['year'].unique():
+        if year == 2023:
+            fig.add_trace(go.Scatter3d(
+                x=filtered_data[filtered_data['year'] == year]['year'],
+                y=filtered_data[filtered_data['year'] == year]['month'],
+                z=filtered_data[filtered_data['year'] == year]['amount'],
+                mode='lines',
+                name=str(year),
+                line=dict(color='red', width=3)
+            ))
+        else:
+            fig.add_trace(go.Scatter3d(
+                x=filtered_data[filtered_data['year'] == year]['year'],
+                y=filtered_data[filtered_data['year'] == year]['month'],
+                z=filtered_data[filtered_data['year'] == year]['amount'],
+                mode='lines',
+                name=str(year),
+                line=dict(color=f'rgba({np.random.randint(0, 255)}, {np.random.randint(0, 255)}, {np.random.randint(0, 255)}, 0.5)', width=2)  # 랜덤 색상 with 50% 투명도
+            ))
 
     # 그래프 제목 및 축 이름 설정 및 그래프 사이즈 조정
     fig.update_layout(
