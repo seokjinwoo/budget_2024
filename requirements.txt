@@ -4,3 +4,4 @@ plotly == 5.17.0
 openpyxl
 matplotlib
 numpy 
+Altair
