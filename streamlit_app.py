@@ -40,7 +40,7 @@ df3 = df3.rename(columns={
 })
 
 url4 = 'https://raw.githubusercontent.com/seokjinwoo/budget_2024/master/Tbill_202309.xlsx'
-df4 = load_data(url2)
+df4 = load_data(url4)
 
 
 # 페이지 선택을 위한 사이드바 메뉴 생성
