@@ -4,6 +4,7 @@ import plotly.graph_objects as go
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import altair as alt
 
 plt.style.use('bmh')
 plt.rcParams['font.family'] = 'NanumGothic'
@@ -38,11 +39,14 @@ df3 = df3.rename(columns={
     'RV_AGGR_AMT': 'amount'
 })
 
+url4 = 'https://raw.githubusercontent.com/seokjinwoo/budget_2024/master/Tbill_202309.xlsx'
+df4 = load_data(url2)
+
 
 # 페이지 선택을 위한 사이드바 메뉴 생성
 page = st.sidebar.selectbox(
-    "예산/국세 진도율(%)/국세 수입(조원)",
-    ["2024년 예산 현황", "2023년 국세 진도율", "2023년 국세 수입 금액(3D)"]
+    "예산/국세 진도율(%)/국세 수입(조원)/재정증권",
+    ["2024년 예산 현황", "2023년 국세 진도율", "2023년 국세 수입 금액(3D)","재정증권"]
 )
 
 # 선택된 페이지에 따라 내용 표시
@@ -114,3 +118,85 @@ elif page == "2023년 국세 수입 금액(3D)":
 
     # Streamlit에서 그래프 표시
     st.plotly_chart(fig)
+
+elif page == "재정증권":    
+        
+    # Streamlit app
+    st.title('연도-월 별 재정증권 발행 현황')
+    
+    # Dropdown menu for selecting y-axis variable
+    y_axis_choice = st.selectbox("발행량 혹은 금리", ["발행액", "발행금리"])
+    
+    # Data preprocessing
+    if y_axis_choice == "발행액":
+        df4['year-month'] = df4['year'].astype(str) + '-' + df4['month'].astype(str).str.zfill(2)
+        grouped = df4.groupby('year-month')['amount_issue'].sum().reset_index()
+        grouped['amount_issue'] = grouped['amount_issue'] / 1e12
+        grouped['year-month-num'] = (grouped['year-month'].str.split('-').str[0].astype(int) - 2011) * 12 + grouped['year-month'].str.split('-').str[1].astype(int)
+        
+        # Slider for selecting date range in numerical format
+        start_num, end_num = st.slider('기간(2011년 1월-2023년 6월)', min(grouped['year-month-num']), max(grouped['year-month-num']), (min(grouped['year-month-num']), max(grouped['year-month-num'])))
+    
+        # Convert selected numerical range back to 'year-month' format
+        filtered_data = grouped[(grouped['year-month-num'] >= start_num) & (grouped['year-month-num'] <= end_num)]
+    
+        # Altair Area Chart with Custom Style
+        chart = alt.Chart(filtered_data).mark_area(
+            line={'color':'darkgreen'},
+            color=alt.Gradient(
+                gradient='linear',
+                stops=[alt.GradientStop(color='white', offset=0),
+                    alt.GradientStop(color='darkgreen', offset=1)],
+                x1=1,
+                x2=1,
+                y1=1,
+                y2=0
+            )
+        ).encode(
+            alt.X('year-month:T', title="연도-월"),
+            alt.Y('amount_issue:Q', title="발행량(조원)"),
+            tooltip=['year-month', 'amount_issue']
+        ).properties(
+            width=700,
+            height=400,
+            title="Amount Issued by Year-Month"
+        )
+    
+        st.altair_chart(chart, use_container_width=True)
+        
+    elif y_axis_choice == "발행금리":
+      
+        df4['year-month'] = df4['year'].astype(str) + '-' + df4['month'].astype(str).str.zfill(2)
+        grouped = df4.groupby('year-month')['rate_issue'].mean().reset_index()
+        grouped['year-month-num'] = (grouped['year-month'].str.split('-').str[0].astype(int) - 2011) * 12 + grouped['year-month'].str.split('-').str[1].astype(int)    
+    
+        # Slider for selecting date range in numerical format
+        start_num, end_num = st.slider('기간(2011년 1월-2023년 6월)', min(grouped['year-month-num']), max(grouped['year-month-num']), (min(grouped['year-month-num']), max(grouped['year-month-num'])))
+    
+        # Convert selected numerical range back to 'year-month' format
+        filtered_data = grouped[(grouped['year-month-num'] >= start_num) & (grouped['year-month-num'] <= end_num)]
+    
+        # Altair Area Chart with Custom Style
+        chart = alt.Chart(filtered_data).mark_area(
+            line={'color':'darkblue'},
+            color=alt.Gradient(
+                gradient='linear',
+                stops=[alt.GradientStop(color='white', offset=0),
+                    alt.GradientStop(color='darkblue', offset=1)],
+                x1=1,
+                x2=1,
+                y1=1,
+                y2=0
+            )
+        ).encode(
+            alt.X('year-month:T', title="연도-월"),
+            alt.Y('rate_issue:Q', title="금리(%)"),
+            tooltip=['year-month', 'rate_issue']
+        ).properties(
+            width=700,
+            height=400,
+            title="Rate Issued by Year-Month"
+        )
+    
+        st.altair_chart(chart, use_container_width=True)
+    
