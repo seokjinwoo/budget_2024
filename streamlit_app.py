@@ -17,7 +17,6 @@ def load_data(url):
 
 API_KEY = st.secrets["api_key"]
 url = 'https://openapi.openfiscaldata.go.kr/IncomeTax'
-key = API_KEY
 
 years = [str(year) for year in range(2014, 2024)]
 
@@ -29,7 +28,7 @@ for year in years:
         'pIndex': '1',
         'pSize': '100',
         'OJ_YY': year,
-        'Key': key
+        'Key': API_KEY
     }
 
     response = requests.get(url, params=params)
