@@ -15,7 +15,7 @@ plt.rcParams['font.family'] = 'NanumGothic'
 def load_data(url):
     return pd.read_excel(url)  # 수정된 부분
 
-API_KEY = st.secrets["API_KEY"]
+API_KEY = st.secrets["api_key"]
 url = 'https://openapi.openfiscaldata.go.kr/IncomeTax'
 key = API_KEY
 
