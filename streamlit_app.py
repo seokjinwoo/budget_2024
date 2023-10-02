@@ -15,33 +15,8 @@ plt.rcParams['font.family'] = 'NanumGothic'
 def load_data(url):
     return pd.read_excel(url)  # 수정된 부분
 
-API_KEY = st.secrets["api_key"]
-url = 'https://openapi.openfiscaldata.go.kr/IncomeTax'
-
-years = [str(year) for year in range(2014, 2024)]
-
-df_list = []
-
-for year in years:
-    params = {
-        'Type': 'xml',
-        'pIndex': '1',
-        'pSize': '100',
-        'OJ_YY': year,
-        'Key': API_KEY
-    }
-
-    response = requests.get(url, params=params)
-    root = ET.fromstring(response.text)
-
-    for item in root.findall('.//row'):
-        data = {elem.tag: elem.text for elem in item}
-        df_list.append(data)
-
-df1 = pd.DataFrame(df_list)
-
-# Remove white spaces in the "ISMOK_NM" column
-df1['ISMOK_NM'] = df1['ISMOK_NM'].str.strip()
+url1 = 'https://raw.githubusercontent.com/seokjinwoo/budget_2024/master/budget_2024_treemap.xlsx'
+df1 = load_data(url1)
 
 url2 = 'https://raw.githubusercontent.com/seokjinwoo/streamlit-example/master/income_data.xlsx'
 df2 = load_data(url2)
