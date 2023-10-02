@@ -5,4 +5,4 @@ openpyxl
 matplotlib
 numpy 
 Altair
-reuqests
+requests
