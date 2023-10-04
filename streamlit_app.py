@@ -18,7 +18,7 @@ def load_data(url):
 url1 = 'https://raw.githubusercontent.com/seokjinwoo/budget_2024/master/budget_2024_treemap.xlsx'
 df1 = load_data(url1)
 
-url2 = 'https://raw.githubusercontent.com/seokjinwoo/streamlit-example/master/income_data.xlsx'
+url2 = 'https://raw.githubusercontent.com/seokjinwoo/budget_2024/master/income_data.xlsx'
 df2 = load_data(url2)
 
 # Preprocessing
@@ -31,7 +31,7 @@ df2 = df2.rename(columns={  # 수정된 부분
 })
 
 
-url2 = 'https://raw.githubusercontent.com/seokjinwoo/streamlit-example/master/income_data.xlsx'
+url2 = 'https://raw.githubusercontent.com/seokjinwoo/budget_2024/master/income_data.xlsx'
 df3 = load_data(url2)
 
 df3 = df3.rename(columns={
