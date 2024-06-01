@@ -48,7 +48,7 @@ df4 = load_data(url4)
 # 페이지 선택을 위한 사이드바 메뉴 생성
 page = st.sidebar.selectbox(
     "예산/국세 진도율(%)/국세 수입(조원)/재정증권",
-    ["재정증권", "2023년 국세 진도율", "2023년 국세 수입 금액(3D)", "2024년 예산 현황" ]
+    ["2024년 국세 진도율", "2024년 국세 수입 금액(3D)", "2024년 예산 현황", "재정증권" ]
 )
 
 # 선택된 페이지에 따라 내용 표시
@@ -59,16 +59,16 @@ if page == "2024년 예산 현황":
     fig = px.treemap(df1, path=['department','program','policy'], values='budget2024')
     st.write(fig)
 
-elif page == "2023년 국세 진도율":
+elif page == "2043년 국세 진도율":
     st.title("국세 진도율에 대한 산포도")
     selected_cat = st.selectbox("세목:", df2['cat'].unique())
     filtered_data = df2[df2['cat'] == selected_cat]
     fig, ax = plt.subplots()
     ax.scatter(np.array(filtered_data['month']), np.array(filtered_data['pro']), alpha=0.3, label='Scatterplot')
-    data_2023 = filtered_data[filtered_data['year'] == 2023]
-    ax.plot(np.array(data_2023['month']), np.array(data_2023['pro']), color='magenta', label='2023')
-    avg_pro_before_2023 = filtered_data[filtered_data['year'] <= 2022].groupby('month')['pro'].mean()
-    ax.plot(np.array(avg_pro_before_2023.index), np.array(avg_pro_before_2023.values), 'b--', label='Average (2014-2022)')
+    data_2024 = filtered_data[filtered_data['year'] == 2024]
+    ax.plot(np.array(data_2024['month']), np.array(data_2024['pro']), color='magenta', label='2024')
+    avg_pro_before_2024 = filtered_data[filtered_data['year'] <= 2023].groupby('month')['pro'].mean()
+    ax.plot(np.array(avg_pro_before_2024.index), np.array(avg_pro_before_2024.values), 'b--', label='Average (2014-2023)')
     months_abbrev = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     ax.set_xticks(range(1, 13))
     ax.set_xticklabels(months_abbrev, rotation=45)
@@ -78,7 +78,7 @@ elif page == "2023년 국세 진도율":
     st.pyplot(fig)
       
     
-elif page == "2023년 국세 수입 금액(3D)":    
+elif page == "2024년 국세 수입 금액(3D)":    
     st.title("국세 수입 추이")
     selected_cat = st.selectbox("세목:", df3['cat'].unique())
     filtered_data = df3[df3['cat'] == selected_cat]
@@ -87,7 +87,7 @@ elif page == "2023년 국세 수입 금액(3D)":
 
     # year별로 데이터를 필터링하여 각각의 라인을 그림
     for year in filtered_data['year'].unique():
-        if year == 2023:
+        if year == 2024:
             fig.add_trace(go.Scatter3d(
                 x=filtered_data[filtered_data['year'] == year]['year'],
                 y=filtered_data[filtered_data['year'] == year]['month'],
