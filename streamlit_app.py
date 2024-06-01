@@ -71,7 +71,7 @@ elif page == "2024년 국세 진도율":
     ax.plot(np.array(avg_pro_before_2024.index), np.array(avg_pro_before_2024.values), 'b--', label='Average (2014-2023)')
     months_abbrev = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     ax.set_xticks(range(1, 13))
-    ax.set_xticklabels(months_abbrev, rotation=45)
+    ax.set_xticklabels(months_abbrev, rotation=10)
     ax.set_xlabel('')
     ax.set_ylabel('Revenue progress rate (%)')
     ax.legend()
