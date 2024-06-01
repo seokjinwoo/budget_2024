@@ -64,7 +64,7 @@ elif page == "2024년 국세 진도율":
     jittered_month = filtered_data['month'] + np.random.normal(0, jitter_strength, size=len(filtered_data))
 
     fig, ax = plt.subplots()
-    ax.scatter(jittered_month, np.array(filtered_data['pro']), alpha=0.3, label='Scatterplot', color='#6B8E23')
+    ax.scatter(jittered_month, np.array(filtered_data['pro']), alpha=0.3, label='Observed', color='#6B8E23')
     data_2024 = filtered_data[filtered_data['year'] == 2024]
     ax.plot(np.array(data_2024['month']), np.array(data_2024['pro']), color='#FF6F61', label='2024')
     avg_pro_before_2024 = filtered_data[filtered_data['year'] <= 2023].groupby('month')['pro'].mean()
