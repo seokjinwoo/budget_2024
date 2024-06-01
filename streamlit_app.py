@@ -56,7 +56,7 @@ if page == "2024년 예산 현황":
     st.write(fig)
 
 elif page == "2024년 국세 진도율":
-    st.title("국세 진도율")
+     st.title("국세 진도율")
     selected_cat = st.selectbox("세목:", df2['cat'].unique())
     filtered_data = df2[df2['cat'] == selected_cat]
 
@@ -64,14 +64,21 @@ elif page == "2024년 국세 진도율":
     jittered_month = filtered_data['month'] + np.random.normal(0, jitter_strength, size=len(filtered_data))
 
     fig, ax = plt.subplots()
-    ax.scatter(jittered_month, np.array(filtered_data['pro']), alpha=0.3, label='Observed', color='#6B8E23')
+    colormap = cm.get_cmap('tab20', len(filtered_data['year'].unique()))
+    
+    for i, year in enumerate(filtered_data['year'].unique()):
+        year_data = filtered_data[filtered_data['year'] == year]
+        jittered_month_year = year_data['month'] + np.random.normal(0, jitter_strength, size=len(year_data))
+        ax.scatter(jittered_month_year, year_data['pro'], alpha=0.5, label=f'Observed {year}', color=colormap(i))
+
     data_2024 = filtered_data[filtered_data['year'] == 2024]
-    ax.plot(np.array(data_2024['month']), np.array(data_2024['pro']), color='#FF6F61', label='2024')
+    ax.plot(data_2024['month'], data_2024['pro'], color='#FF6F61', label='2024', linewidth=2)
     avg_pro_before_2024 = filtered_data[filtered_data['year'] <= 2023].groupby('month')['pro'].mean()
-    ax.plot(np.array(avg_pro_before_2024.index), np.array(avg_pro_before_2024.values), 'b--', label='Average (2014-2023)')
+    ax.plot(avg_pro_before_2024.index, avg_pro_before_2024.values, 'b--', label='Average (2014-2023)', linewidth=2)
+    
     months_abbrev = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     ax.set_xticks(range(1, 13))
-    ax.set_xticklabels(months_abbrev, rotation=10)
+    ax.set_xticklabels(months_abbrev, rotation=45)
     ax.set_xlabel('')
     ax.set_ylabel('Revenue progress rate (%)')
     ax.legend()
