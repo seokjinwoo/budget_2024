@@ -61,24 +61,17 @@ elif page == "2024년 국세 진도율":
     filtered_data = df2[df2['cat'] == selected_cat]
 
     jitter_strength = 0.1  # Adjust this value to increase or decrease the jitter
+    jittered_month = filtered_data['month'] + np.random.normal(0, jitter_strength, size=len(filtered_data))
 
     fig, ax = plt.subplots()
-    colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A8', '#A833FF', '#33FFF4', '#FF8C33', '#8CFF33', '#338CFF', '#FF33D1', '#D133FF', '#33FF8C']
-    unique_years = filtered_data['year'].unique()
-
-    for i, year in enumerate(unique_years):
-        year_data = filtered_data[filtered_data['year'] == year]
-        jittered_month_year = year_data['month'] + np.random.normal(0, jitter_strength, size=len(year_data))
-        ax.scatter(jittered_month_year, year_data['pro'], alpha=0.5, label=f'{year}', color=colors[i % len(colors)])
-
+    ax.scatter(jittered_month, np.array(filtered_data['pro']), alpha=0.3, label='Observed', color='#6B8E23')
     data_2024 = filtered_data[filtered_data['year'] == 2024]
-    ax.plot(data_2024['month'], data_2024['pro'], color='#FF6F61', label='2024', linewidth=2)
+    ax.plot(np.array(data_2024['month']), np.array(data_2024['pro']), color='#FF6F61', label='2024')
     avg_pro_before_2024 = filtered_data[filtered_data['year'] <= 2023].groupby('month')['pro'].mean()
-    ax.plot(avg_pro_before_2024.index, avg_pro_before_2024.values, 'b--', label='Average (2014-2023)', linewidth=2)
-    
+    ax.plot(np.array(avg_pro_before_2024.index), np.array(avg_pro_before_2024.values), 'b--', label='Average (2014-2023)')
     months_abbrev = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     ax.set_xticks(range(1, 13))
-    ax.set_xticklabels(months_abbrev, rotation=45)
+    ax.set_xticklabels(months_abbrev, rotation=10)
     ax.set_xlabel('')
     ax.set_ylabel('Revenue progress rate (%)')
     ax.legend()
