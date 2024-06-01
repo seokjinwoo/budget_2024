@@ -53,14 +53,14 @@ page = st.sidebar.selectbox(
 
 # 선택된 페이지에 따라 내용 표시
 if page == "2024년 예산 현황":
-    st.title("2024년 예산 현황")
+    st.title("2024년 예산")
     st.subheader("소관(부처)-프로그램-세부사업 순")
     st.text("출처: 열린재정, 단위: 천원")
     fig = px.treemap(df1, path=['department','program','policy'], values='budget2024')
     st.write(fig)
 
 elif page == "2024년 국세 진도율":
-    st.title("국세 진도율에 대한 산포도")
+    st.title("국세 진도율")
     selected_cat = st.selectbox("세목:", df2['cat'].unique())
     filtered_data = df2[df2['cat'] == selected_cat]
     fig, ax = plt.subplots()
