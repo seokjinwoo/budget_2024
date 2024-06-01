@@ -56,7 +56,7 @@ if page == "2024년 예산 현황":
     st.write(fig)
 
 elif page == "2024년 국세 진도율":
-    st.title("국세 진도율에 대한 산포도")
+    st.title("국세 진도율")
     selected_cat = st.selectbox("세목:", df2['cat'].unique())
     filtered_data = df2[df2['cat'] == selected_cat]
 
