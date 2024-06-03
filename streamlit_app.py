@@ -83,16 +83,18 @@ elif page == "2024년 국세 진도율":
     # 구분선 추가
     st.markdown("---")
     
-    # 수입 섹션
-    st.markdown(f"## 연도별 {selected_cat} 세수")
     
     # 2024년에 관측치가 있는 마지막 달 찾기
     last_month_2024 = df2[(df2['year'] == 2024)]['month'].max()
+
+
+      # 수입 섹션
+    st.markdown(f"## 연도별 {last_month_2024}월 {selected_cat} 세수")
     
     # 2024년에 관측치가 있는 마지막 달 기준 연도별 해당 세목의 수입을 막대그래프로 표현
     last_month_data = df2[(df2['month'] == last_month_2024) & (df2['cat'] == selected_cat)]
     fig, ax = plt.subplots()
-    ax.bar(last_month_data['year'], last_month_data['amount'], color='#FF6F61')
+    ax.bar(last_month_data['year'], last_month_data['amount'])
     ax.set_xlabel('Year')
     ax.set_ylabel('Amount')
     st.pyplot(fig)
