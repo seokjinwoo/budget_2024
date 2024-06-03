@@ -61,7 +61,7 @@ elif page == "2024년 국세 진도율":
     selected_cat = st.selectbox("세목:", df2['cat'].unique())
     filtered_data = df2[df2['cat'] == selected_cat]
 
-    st.markdown("## 진도율")
+    st.markdown("## 진도율(%)")
     
     jitter_strength = 0.1  # Adjust this value to increase or decrease the jitter
     jittered_month = filtered_data['month'] + np.random.normal(0, jitter_strength, size=len(filtered_data))
@@ -89,13 +89,12 @@ elif page == "2024년 국세 진도율":
 
 
       # 수입 섹션
-    st.markdown(f"## 연도별 {last_month_2024}월 {selected_cat} 세수")
+    st.markdown(f"## 연도별 {last_month_2024}월 {selected_cat} 세수(조원)")
     
     # 2024년에 관측치가 있는 마지막 달 기준 연도별 해당 세목의 수입을 막대그래프로 표현
     last_month_data = filtered_data[(filtered_data['month'] == last_month_2024) & (filtered_data['cat'] == selected_cat)]
     fig, ax = plt.subplots()
     ax.bar(last_month_data['year'], last_month_data['amount'])
-    ax.set_xlabel('Year')
     ax.set_ylabel('Amount')
     st.pyplot(fig)
 
