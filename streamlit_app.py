@@ -95,7 +95,7 @@ elif page == "2024년 국세 진도율":
     
     # Create the bar plot
     fig, ax = plt.subplots()
-    bars = ax.bar(last_month_data['year'], last_month_data['amount'])
+    bars = ax.bar(last_month_data['year'], last_month_data['amount'], color=[(0.1, 0.2, 0.5, 0.1) if year != 2024 else (0.1, 0.2, 0.5, 1.0) for year in last_month_data['year']])
     
     # Add value labels on the bars
     for bar in bars:
