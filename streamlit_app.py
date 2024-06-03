@@ -61,6 +61,8 @@ elif page == "2024년 국세 진도율":
     selected_cat = st.selectbox("세목:", df2['cat'].unique())
     filtered_data = df2[df2['cat'] == selected_cat]
 
+    st.markdown("## 진도율")
+    
     jitter_strength = 0.1  # Adjust this value to increase or decrease the jitter
     jittered_month = filtered_data['month'] + np.random.normal(0, jitter_strength, size=len(filtered_data))
 
@@ -82,7 +84,7 @@ elif page == "2024년 국세 진도율":
     st.markdown("---")
     
     # 수입 섹션
-    st.title(f"연도별 {selected_cat} 세수")
+    st.markdown(f"연도별 {selected_cat} 세수")
     
     # 2024년에 관측치가 있는 마지막 달 찾기
     last_month_2024 = df2[(df2['year'] == 2024)]['month'].max()
