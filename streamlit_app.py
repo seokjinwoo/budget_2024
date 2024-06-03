@@ -25,7 +25,8 @@ df2 = df2.rename(columns={
     'OJ_YY': 'year',
     'OJ_M': 'month',
     'ISMOK_NM': 'cat',
-    'OUT_RT': 'pro'
+    'OUT_RT': 'pro',
+    'RV_AGGR_AMT': 'amount'
 })
 
 url3 = 'https://raw.githubusercontent.com/seokjinwoo/budget_2024/master/income_data.xlsx'
