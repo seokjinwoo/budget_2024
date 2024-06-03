@@ -80,23 +80,37 @@ elif page == "2024년 국세 진도율":
     ax.legend()
     st.pyplot(fig)
 
-    # 구분선 추가
-    st.markdown("---")
-    
-    
-    # 2024년에 관측치가 있는 마지막 달 찾기
-    last_month_2024 = filtered_data[(filtered_data['year'] == 2024)]['month'].max()
 
+# 구분선 추가
+st.markdown("---")
 
-      # 수입 섹션
-    st.markdown(f"## 연도별 {last_month_2024}월 {selected_cat} 세수(조원)")
-    
-    # 2024년에 관측치가 있는 마지막 달 기준 연도별 해당 세목의 수입을 막대그래프로 표현
-    last_month_data = filtered_data[(filtered_data['month'] == last_month_2024) & (filtered_data['cat'] == selected_cat)]
-    fig, ax = plt.subplots()
-    ax.bar(last_month_data['year'], last_month_data['amount'])
-    ax.set_ylabel('Amount')
-    st.pyplot(fig)
+# 2024년에 관측치가 있는 마지막 달 찾기
+last_month_2024 = filtered_data[filtered_data['year'] == 2024]['month'].max()
+
+# 수입 섹션
+st.markdown(f"## 연도별 {last_month_2024}월 {selected_cat} 세수(조원)")
+
+# 2024년에 관측치가 있는 마지막 달 기준 연도별 해당 세목의 수입을 막대그래프로 표현
+last_month_data = filtered_data[(filtered_data['month'] == last_month_2024)]
+
+# Create the bar plot
+fig, ax = plt.subplots()
+bars = ax.bar(last_month_data['year'], last_month_data['amount'])
+
+# Add value labels on the bars
+for bar in bars:
+    height = bar.get_height()
+    ax.annotate(f'{height:.2f}', 
+                xy=(bar.get_x() + bar.get_width() / 2, height),
+                xytext=(0, 3),  # 3 points vertical offset
+                textcoords="offset points",
+                ha='center', va='bottom')
+
+# Set year ticks from 2014 to 2024
+ax.set_xticks(range(2014, 2025))
+ax.set_xticklabels(range(2014, 2025), rotation=45)
+ax.set_ylabel('Amount')
+st.pyplot(fig)
 
 
 
