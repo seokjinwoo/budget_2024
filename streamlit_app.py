@@ -100,7 +100,7 @@ elif page == "2024년 국세 진도율":
     # Add value labels on the bars
     for bar in bars:
         height = bar.get_height()
-        ax.annotate(f'{height:.2f}', 
+        ax.annotate(f'{height:.1f}', 
                     xy=(bar.get_x() + bar.get_width() / 2, height),
                     xytext=(0, 3),  # 3 points vertical offset
                     textcoords="offset points",
@@ -108,7 +108,7 @@ elif page == "2024년 국세 진도율":
     
     # Set year ticks from 2014 to 2024
     ax.set_xticks(range(2014, 2025))
-    ax.set_xticklabels(range(2014, 2025), rotation=45)
+    ax.set_xticklabels(range(2014, 2025), rotation=10)
     ax.set_ylabel('Amount')
     st.pyplot(fig)
 
