@@ -78,6 +78,26 @@ elif page == "2024년 국세 진도율":
     ax.legend()
     st.pyplot(fig)
 
+    # 구분선 추가
+    st.markdown("---")
+    
+    # 수입 섹션
+    st.title(f"연도별 {selected_cat} 세수")
+    
+    # 2024년에 관측치가 있는 마지막 달 찾기
+    last_month_2024 = df2[(df2['year'] == 2024)]['month'].max()
+    
+    # 2024년에 관측치가 있는 마지막 달 기준 연도별 해당 세목의 수입을 막대그래프로 표현
+    last_month_data = df2[(df2['month'] == last_month_2024) & (df2['cat'] == selected_cat)]
+    fig, ax = plt.subplots()
+    ax.bar(last_month_data['year'], last_month_data['amount'], color='#FF6F61')
+    ax.set_xlabel('Year')
+    ax.set_ylabel('Amount')
+    ax.set_title(f'Yearly Revenue for {selected_cat} ({last_month_2024}월)')
+    st.pyplot(fig)
+
+
+
 elif page == "2024년 국세 수입 금액(3D)":
     st.title("국세 수입 추이")
     selected_cat = st.selectbox("세목:", df3['cat'].unique())
