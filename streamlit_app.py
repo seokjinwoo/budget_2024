@@ -119,7 +119,9 @@ elif page == "2024년 국세 진도율":
         legend=dict(
             orientation='h',
             yanchor='bottom',
-            xanchor='center'
+            y = -0.2,
+            xanchor='center',
+            x = 0.5
         ),
         template='plotly_white'
     )
