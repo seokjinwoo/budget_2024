@@ -108,6 +108,7 @@ elif page == "2024년 국세 진도율":
         name='Average (2014-2023)'
     ))
 
+    # 레이아웃 업데이트 (범례 위치를 아래로 변경)
     fig.update_layout(
         xaxis=dict(
             tickmode='array',
@@ -115,7 +116,13 @@ elif page == "2024년 국세 진도율":
             ticktext=["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         ),
         yaxis_title='Revenue progress rate (%)',
-        legend_title_text='Legend',
+        legend=dict(
+            orientation='h',
+            yanchor='bottom',
+            y=-0.2,
+            xanchor='center',
+            x=0.5
+        ),
         template='plotly_white'
     )
 
