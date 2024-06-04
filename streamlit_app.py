@@ -62,7 +62,9 @@ elif page == "2024년 국세 진도율":
     filtered_data = df2[df2['cat'] == selected_cat]
 
     st.markdown("## 진도율(%)")
-    st.markdown('''<span style='color:red'>진도율</span>은 예산 대비 얼마나 거쳤는지를 보는 지표입니다. 평균적으로 연말이 되면 100%를 초과합니다. 이는 세수 추계가 보수적으로 이루어지기 때문입니다. 남은 돈은 세계잉여금의 형태로 처리됩니다.''')
+    st.markdown('''<span style='color:red'>진도율</span>은 예산 대비 얼마나 거쳤는지를 보는 지표입니다. 
+    평균적으로 연말이 되면 100%를 초과합니다. 이는 세수 추계가 보수적으로 이루어지기 때문입니다. 
+    남은 돈은 세계잉여금의 형태로 처리됩니다.''', unsafe_allow_html=True)
     
     jitter_strength = 0.1  # Adjust this value to increase or decrease the jitter
     jittered_month = filtered_data['month'] + np.random.normal(0, jitter_strength, size=len(filtered_data))
