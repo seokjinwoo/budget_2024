@@ -57,107 +57,123 @@ if page == "2024년 예산 현황":
     st.write(fig)
 
 elif page == "2024년 국세 진도율":
+    # 2024년도에 관측된 월 리스트 생성
+    months_2024 = df2[df2['year'] == 2024]['month'].unique()
+
+    # Streamlit 앱
     st.title("국세 진도율")
+
+
+    # 세목 선택
     selected_cat = st.selectbox("세목:", df2['cat'].unique())
-    filtered_data = df2[df2['cat'] == selected_cat]
+    filtered_data = df2[(df2['cat'] == selected_cat)]
+
+    # 2024년도에 관측된 월 선택
+    selected_month = st.selectbox("2024년도에 관측된 월을 선택하세요:", months_2024)
+
 
     st.markdown("## 진도율(%)")
     st.markdown('''<span style='color:red'>진도율</span>은 예산 대비 얼마나 거쳤는지를 보는 지표입니다. 
     평균적으로 연말이 되면 100%를 초과합니다. 이는 세수 추계가 보수적으로 이루어지기 때문입니다. 
     남은 돈은 세계잉여금의 형태로 처리됩니다.''', unsafe_allow_html=True)
-    
+
     jitter_strength = 0.1  # Adjust this value to increase or decrease the jitter
     jittered_month = filtered_data['month'] + np.random.normal(0, jitter_strength, size=len(filtered_data))
 
-    fig, ax = plt.subplots()
-    ax.scatter(jittered_month, np.array(filtered_data['pro']), alpha=0.3, label='Observed', color='#6B8E23')
-    data_2024 = filtered_data[filtered_data['year'] == 2024]
-    ax.plot(np.array(data_2024['month']), np.array(data_2024['pro']), color='#FF6F61', label='2024')
-    avg_pro_before_2024 = filtered_data[filtered_data['year'] <= 2023].groupby('month')['pro'].mean()
-    ax.plot(np.array(avg_pro_before_2024.index), np.array(avg_pro_before_2024.values), 'b--', label='Average (2014-2023)')
-    months_abbrev = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    ax.set_xticks(range(1, 13))
-    ax.set_xticklabels(months_abbrev, rotation=10)
-    ax.set_xlabel('')
-    ax.set_ylabel('Revenue progress rate (%)')
-    ax.legend()
-    st.pyplot(fig)
-
-    
-    # 구분선 추가
-    st.markdown("---")
-    
-    # 2024년에 관측치가 있는 마지막 달 찾기
-    last_month_2024 = filtered_data[filtered_data['year'] == 2024]['month'].max()
-    
-    # 수입 섹션
-    st.markdown(f"## 연도별 {last_month_2024}월 {selected_cat} 세수(조원)")
-    
-    # 2024년에 관측치가 있는 마지막 달 기준 연도별 해당 세목의 수입을 막대그래프로 표현
-    last_month_data = filtered_data[(filtered_data['month'] == last_month_2024)]
-    
-    # Create the bar plot
-    fig, ax = plt.subplots()
-    bars = ax.bar(last_month_data['year'], last_month_data['amount'], color=[(0.1, 0.2, 0.5, 0.1) if year != 2024 else (0.1, 0.2, 0.5, 1.0) for year in last_month_data['year']])
-    
-    # Add value labels on the bars
-    for bar in bars:
-        height = bar.get_height()
-        ax.annotate(f'{height:.1f}', 
-                    xy=(bar.get_x() + bar.get_width() / 2, height),
-                    xytext=(0, 3),  # 3 points vertical offset
-                    textcoords="offset points",
-                    ha='center', va='bottom')
-    
-    # Set year ticks from 2014 to 2024
-    ax.set_xticks(range(2014, 2025))
-    ax.set_xticklabels(range(2014, 2025), rotation=10)
-    ax.set_ylabel('Amount')
-    st.pyplot(fig)
-
-
-
-elif page == "2024년 국세 수입 금액(3D)":
-    st.title("국세 수입 추이")
-    selected_cat = st.selectbox("세목:", df3['cat'].unique())
-    filtered_data = df3[df3['cat'] == selected_cat]
-
     fig = go.Figure()
 
-    # Filter data by year and plot each line
-    for year in filtered_data['year'].unique():
-        if year == 2024:
-            fig.add_trace(go.Scatter3d(
-                x=filtered_data[filtered_data['year'] == year]['year'],
-                y=filtered_data[filtered_data['year'] == year]['month'],
-                z=filtered_data[filtered_data['year'] == year]['amount'],
-                mode='lines',
-                name=str(year),
-                line=dict(color='#FF6F61', width=3)
-            ))
-        else:
-            fig.add_trace(go.Scatter3d(
-                x=filtered_data[filtered_data['year'] == year]['year'],
-                y=filtered_data[filtered_data['year'] == year]['month'],
-                z=filtered_data[filtered_data['year'] == year]['amount'],
-                mode='lines',
-                name=str(year),
-                line=dict(color=f'rgba({np.random.randint(50, 150)}, {np.random.randint(50, 150)}, {np.random.randint(50, 150)}, 0.5)', width=2)
-            ))
+    fig.add_trace(go.Scatter(
+        x=jittered_month,
+        y=filtered_data['pro'],
+        mode='markers',
+        marker=dict(color='rgba(107, 142, 35, 0.3)', size=10, line=dict(width=1, color='DarkSlateGrey')),
+        name='Observed'
+    ))
 
-    # Update layout
+    data_2024 = filtered_data[(filtered_data['year'] == 2024) & (filtered_data['month'] <= selected_month)] 
+    fig.add_trace(go.Scatter(
+        x=data_2024['month'],
+        y=data_2024['pro'],
+        mode='lines+markers',
+        line=dict(color='red', width=3),
+        name='2024'
+    ))
+
+    avg_pro_before_2024 = filtered_data[filtered_data['year'] <= 2023].groupby('month')['pro'].mean()
+    fig.add_trace(go.Scatter(
+        x=avg_pro_before_2024.index,
+        y=avg_pro_before_2024.values,
+        mode='lines',
+        line=dict(color='blue', dash='dash', width=2),
+        name='Average (2014-2023)'
+    ))
+
     fig.update_layout(
-        title=f"3D Line Graph for {selected_cat}",
-        scene=dict(
-            xaxis_title='Year',
-            yaxis_title='Month',
-            zaxis_title='Amount'
+        xaxis=dict(
+            tickmode='array',
+            tickvals=list(range(1, 13)),
+            ticktext=["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         ),
-        width=1000,
-        height=600
+        yaxis_title='Revenue progress rate (%)',
+        legend_title_text='Legend',
+        template='plotly_white'
     )
 
     st.plotly_chart(fig)
+
+    # 구분선 추가
+    st.markdown("---")
+
+    # 수입 섹션
+    st.markdown(f"## 연도별 {selected_month}월 {selected_cat} 세수(조원)")
+
+    # 선택된 월 기준 연도별 해당 세목의 수입을 막대그래프로 표현
+    last_month_data = df2[(df2['month'] == selected_month) & (df2['cat'] == selected_cat)]
+
+    # Create the bar plot
+    colors = ['#636EFA', '#EF553B', '#00CC96', '#AB63FA', '#FFA15A', '#19D3F3', '#FF6692', '#B6E880', '#FF97FF', '#FECB52']
+    bar_fig = go.Figure()
+
+    bar_fig.add_trace(go.Bar(
+        x=last_month_data['year'],
+        y=last_month_data['amount'],
+        marker=dict(
+            color=[colors[i % len(colors)] for i in range(len(last_month_data))],
+            line=dict(color='DarkSlateGrey', width=1.5)
+        ),
+        opacity=0.9
+    ))
+
+    # Add value labels on the bars
+    for i, row in last_month_data.iterrows():
+        bar_fig.add_annotation(
+            x=row['year'],
+            y=row['amount'],
+            text=f'{row["amount"]:.1f}',
+            showarrow=False,
+            yshift=10,
+            font=dict(color='black')
+        )
+
+    bar_fig.update_layout(
+        xaxis=dict(
+            tickmode='array',
+            tickvals=list(range(2014, 2025)),
+            ticktext=list(range(2014, 2025)),
+            title='Year'
+        ),
+        yaxis_title='Amount',
+        showlegend=False,
+        template='plotly_white',
+        plot_bgcolor='rgba(0,0,0,0)',
+        font=dict(
+            family="Arial, sans-serif",
+            size=14,
+            color="DarkSlateGrey"
+        )
+    )
+
+    st.plotly_chart(bar_fig)
 
 elif page == "재정증권":
     st.title('연도-월 별 재정증권 발행 현황')
