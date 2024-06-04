@@ -118,10 +118,8 @@ elif page == "2024년 국세 진도율":
         yaxis_title='Revenue progress rate (%)',
         legend=dict(
             orientation='h',
-            yanchor='top',
-            y= 0.2,
-            xanchor='center',
-            x=0.5
+            yanchor='bottom',
+            xanchor='center'
         ),
         template='plotly_white'
     )
