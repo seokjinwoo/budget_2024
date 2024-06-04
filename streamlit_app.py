@@ -123,7 +123,7 @@ elif page == "2024년 국세 진도율":
             xanchor='center',
             x=0.5
         ),
-        template='seaborn'
+        template='ggplot2'
     )
 
     st.plotly_chart(fig)
