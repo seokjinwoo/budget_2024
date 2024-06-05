@@ -191,6 +191,50 @@ elif page == "2024년 국세 진도율":
     st.plotly_chart(bar_fig, use_container_width=True)
 
 
+elif page == "2024년 국세 수입 금액(3D)":
+ 
+    st.title("국세 수입 추이")
+    selected_cat = st.selectbox("세목:", df3['cat'].unique())
+    filtered_data = df3[df3['cat'] == selected_cat]
+
+    fig = go.Figure()
+
+    # Filter data by year and plot each line
+    for year in filtered_data['year'].unique():
+        if year == 2024:
+            fig.add_trace(go.Scatter3d(
+                x=filtered_data[filtered_data['year'] == year]['year'],
+                y=filtered_data[filtered_data['year'] == year]['month'],
+                z=filtered_data[filtered_data['year'] == year]['amount'],
+                mode='lines',
+                name=str(year),
+                line=dict(color='#FF6F61', width=3)
+            ))
+        else:
+            fig.add_trace(go.Scatter3d(
+                x=filtered_data[filtered_data['year'] == year]['year'],
+                y=filtered_data[filtered_data['year'] == year]['month'],
+                z=filtered_data[filtered_data['year'] == year]['amount'],
+                mode='lines',
+                name=str(year),
+                line=dict(color=f'rgba({np.random.randint(50, 150)}, {np.random.randint(50, 150)}, {np.random.randint(50, 150)}, 0.5)', width=2)
+            ))
+
+    # Update layout
+    fig.update_layout(
+        title=f"3D Line Graph for {selected_cat}",
+        scene=dict(
+            xaxis_title='Year',
+            yaxis_title='Month',
+            zaxis_title='Amount'
+        ),
+        width=1000,
+        height=600
+    )
+
+    st.plotly_chart(fig)
+
+
 elif page == "재정증권":
     st.title('연도-월 별 재정증권 발행 현황')
     st.markdown('''<span style='color: #FF6F61;'>재정증권</span>은 기재부가 단기차입을 목적으로 발행하는 만기 63일물 채권입니다.
