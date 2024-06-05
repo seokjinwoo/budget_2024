@@ -36,8 +36,10 @@ df3 = df3.rename(columns={
     'OJ_YY': 'year',
     'OJ_M': 'month',
     'ISMOK_NM': 'cat',
+    'OUT_RT': 'pro',
     'RV_AGGR_AMT': 'amount'
 })
+
 
 url4 = 'https://raw.githubusercontent.com/seokjinwoo/budget_2024/master/Tbill_202309.xlsx'
 df4 = load_data(url4)
