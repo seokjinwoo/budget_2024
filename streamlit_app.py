@@ -144,17 +144,17 @@ elif page == "2024년 국세 진도율":
     last_month_data = df2[(df2['month'] == selected_month) & (df2['cat'] == selected_cat)]
 
     # Create the bar plot
-    colors = ['#636EFA', '#EF553B', '#00CC96', '#AB63FA', '#FFA15A', '#19D3F3', '#FF6692', '#B6E880', '#FF97FF', '#FECB52']
+    colors = ['#AEC6CF', '#FFB7B2', '#C1E1C1', '#FFDAC1', '#B39EB5', '#FFDFD3', '#C6E2FF', '#E6E6FA', '#FFD1DC', '#F5E6CC']
+
     bar_fig = go.Figure()
 
     bar_fig.add_trace(go.Bar(
         x=last_month_data['year'],
         y=last_month_data['amount'],
         marker=dict(
-            color=[colors[i % len(colors)] for i in range(len(last_month_data))],
-            line=dict(color='DarkSlateGrey', width=1.5)
+            color=[colors[i % len(colors)] for i in range(len(last_month_data))]
         ),
-        opacity=0.9
+        opacity=1.0
     ))
 
     # Add value labels on the bars
@@ -187,6 +187,7 @@ elif page == "2024년 국세 진도율":
     )
 
     st.plotly_chart(bar_fig, use_container_width=True)
+
 
 elif page == "재정증권":
     st.title('연도-월 별 재정증권 발행 현황')
