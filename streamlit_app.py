@@ -186,7 +186,7 @@ elif page == "2024년 국세 진도율":
         )
     )
 
-    st.plotly_chart(bar_fig)
+    st.plotly_chart(bar_fig, use_container_width=True)
 
 elif page == "재정증권":
     st.title('연도-월 별 재정증권 발행 현황')
