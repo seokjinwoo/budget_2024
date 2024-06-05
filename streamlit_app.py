@@ -57,31 +57,33 @@ if page == "2024년 예산 현황":
     st.write(fig)
 
 elif page == "2024년 국세 진도율":
+
+
     # 2024년도에 관측된 월 리스트 생성
     months_2024 = df2[df2['year'] == 2024]['month'].unique()
 
     # Streamlit 앱
     st.title("국세 진도율")
 
-
     # 세목 선택
     selected_cat = st.selectbox("세목:", df2['cat'].unique())
-    filtered_data = df2[(df2['cat'] == selected_cat)]
+    filtered_data = df2[df2['cat'] == selected_cat]
 
     # 2024년도에 관측된 월 선택
     selected_month = st.selectbox("2024년도에 관측된 월을 선택하세요:", months_2024)
-
 
     st.markdown("## 진도율(%)")
     st.markdown('''<span style='color:red'>진도율</span>은 예산 대비 얼마나 거쳤는지를 보는 지표입니다. 
     평균적으로 연말이 되면 100%를 초과합니다. 이는 세수 추계가 보수적으로 이루어지기 때문입니다. 
     남은 돈은 세계잉여금의 형태로 처리됩니다.''', unsafe_allow_html=True)
 
-    jitter_strength = 0.1  # Adjust this value to increase or decrease the jitter
+    # Adding jitter to the month values for better visualization
+    jitter_strength = 0.1
     jittered_month = filtered_data['month'] + np.random.normal(0, jitter_strength, size=len(filtered_data))
 
     fig = go.Figure()
 
+    # Scatter plot for observed data with jitter
     fig.add_trace(go.Scatter(
         x=jittered_month,
         y=filtered_data['pro'],
@@ -90,7 +92,8 @@ elif page == "2024년 국세 진도율":
         name='Observed'
     ))
 
-    data_2024 = filtered_data[(filtered_data['year'] == 2024) & (filtered_data['month'] <= selected_month)] 
+    # Line plot for 2024 data up to the selected month
+    data_2024 = filtered_data[(filtered_data['year'] == 2024) & (filtered_data['month'] <= selected_month)]
     fig.add_trace(go.Scatter(
         x=data_2024['month'],
         y=data_2024['pro'],
@@ -99,6 +102,7 @@ elif page == "2024년 국세 진도율":
         name='2024'
     ))
 
+    # Average progress rate from previous years (2014-2023)
     avg_pro_before_2024 = filtered_data[filtered_data['year'] <= 2023].groupby('month')['pro'].mean()
     fig.add_trace(go.Scatter(
         x=avg_pro_before_2024.index,
@@ -108,7 +112,6 @@ elif page == "2024년 국세 진도율":
         name='Average (2014-2023)'
     ))
 
-    # 레이아웃 업데이트 (범례 위치를 아래로 변경)
     fig.update_layout(
         xaxis=dict(
             tickmode='array',
@@ -119,14 +122,17 @@ elif page == "2024년 국세 진도율":
         legend=dict(
             orientation='h',
             yanchor='bottom',
-            y = -0.2,
+            y=1.02,
             xanchor='center',
-            x = 0.5
+            x=0.5
         ),
+        margin=dict(l=20, r=20, t=20, b=20),
+        height=600,
         template='plotly_white'
     )
 
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, use_container_width=True)
+
 
     # 구분선 추가
     st.markdown("---")
