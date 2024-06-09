@@ -78,7 +78,7 @@ elif page == "2024년 국세 진도율":
     # 2024년도에 관측된 월 선택
     selected_month = st.selectbox("2024년도에 관측된 월을 선택하세요:", months_2024)
 
-    st.markdown(f"##｛selected_cat｝진도율(%)")
+    st.markdown(f"##진도율(%)")
 
 
     # Adding jitter to the month values for better visualization
