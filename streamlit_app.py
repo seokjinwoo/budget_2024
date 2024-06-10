@@ -88,7 +88,7 @@ elif page == "2024년 국세 진도율":
     with col1:
         st.markdown(f"""
         <div style="background-color: #e0f7fa; padding: 20px; border-radius: 10px; text-align: center;">
-            <h2 style="color: #00796b;">2014-2023년 평균 진도율</h2>
+            <h2 style="color: #00796b;">평균 진도율</h2>
             <p style="font-size: 30px; color: #00796b;">{avg_progress_rate:.2f}%</p>
         </div>
         """, unsafe_allow_html=True)
