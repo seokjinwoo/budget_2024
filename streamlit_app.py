@@ -87,16 +87,16 @@ elif page == "2024년 국세 진도율":
     col1, col2 = st.columns(2)
     with col1:
         st.markdown(f"""
-        <div style="background-color: #e0f7fa; padding: 20px; border-radius: 10px; text-align: center;">
-            <h2 style="color: #00796b;">평균 진도율</h2>
-            <p style="font-size: 30px; color: #00796b;">{avg_progress_rate:.2f}%</p>
+        <div style="background-color: #DDE5B6; padding: 20px; border-radius: 10px; text-align: center;">
+            <h2 style="color: #6B4226;">평균 진도율</h2>
+            <p style="font-size: 30px; color: #6B4226;">{avg_progress_rate:.2f}%</p>
         </div>
         """, unsafe_allow_html=True)
     with col2:
         st.markdown(f"""
-        <div style="background-color: #fff3e0; padding: 20px; border-radius: 10px; text-align: center;">
-            <h2 style="color: #e64a19;">2024년 진도율</h2>
-            <p style="font-size: 30px; color: #e64a19;">{progress_rate_2024:.2f}%</p>
+        <div style="background-color: #FFE8A1; padding: 20px; border-radius: 10px; text-align: center;">
+            <h2 style="color: #D95D39;">2024년 진도율</h2>
+            <p style="font-size: 30px; color: #D95D39;">{progress_rate_2024:.2f}%</p>
         </div>
         """, unsafe_allow_html=True)
 
