@@ -76,8 +76,22 @@ elif page == "2024년 국세 진도율":
     filtered_data = df2[df2['cat'] == selected_cat]
 
     # 2024년도에 관측된 월 선택
-    selected_month = st.selectbox("2024년도에 관측된 월을 선택하세요:", months_2024)
+    selected_month = st.selectbox("2024년도 월을 선택하세요:", months_2024)
 
+
+    # 평균 진도율과 2024년 진도율 계산
+    avg_progress_rate = filtered_data[(filtered_data['year'] <= 2023) & (filtered_data['month'] == selected_month)]['pro'].mean()
+    progress_rate_2024 = filtered_data[(filtered_data['year'] == 2024) & (filtered_data['month'] == selected_month)]['pro'].mean()
+    
+    # 평균 진도율과 2024년 진도율을 큰 글씨로 표시
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("2014-2023년 평균 진도율", f"{avg_progress_rate:.2f}%")
+    with col2:
+        st.metric("2024년 진도율", f"{progress_rate_2024:.2f}%")
+
+
+    
     st.markdown(f"## {selected_cat } 진도율(%)")
 
 
