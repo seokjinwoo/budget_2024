@@ -86,9 +86,19 @@ elif page == "2024년 국세 진도율":
     # 평균 진도율과 2024년 진도율을 큰 글씨로 표시
     col1, col2 = st.columns(2)
     with col1:
-        st.metric("2014-2023년 평균 진도율", f"{avg_progress_rate:.2f}%")
+        st.markdown(f"""
+        <div style="background-color: #e0f7fa; padding: 20px; border-radius: 10px; text-align: center;">
+            <h2 style="color: #00796b;">평균 진도율</h2>
+            <p style="font-size: 30px; color: #00796b;">{avg_progress_rate:.2f}%</p>
+        </div>
+        """, unsafe_allow_html=True)
     with col2:
-        st.metric("2024년 진도율", f"{progress_rate_2024:.2f}%")
+        st.markdown(f"""
+        <div style="background-color: #fff3e0; padding: 20px; border-radius: 10px; text-align: center;">
+            <h2 style="color: #e64a19;">2024년 진도율</h2>
+            <p style="font-size: 30px; color: #e64a19;">{progress_rate_2024:.2f}%</p>
+        </div>
+        """, unsafe_allow_html=True)
 
 
     
