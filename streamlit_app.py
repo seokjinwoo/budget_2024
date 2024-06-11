@@ -62,7 +62,8 @@ elif page == "2024년 국세 진도율":
 
 
     # 2024년도에 관측된 월 리스트 생성
-    months_2024 = df2[df2['year'] == 2024]['month'].unique()
+    months_2024 = sorted(df2[df2['year'] == 2024]['month'].unique(), reverse=True)
+
 
     # Streamlit 앱
     st.title("국세 진도율")
