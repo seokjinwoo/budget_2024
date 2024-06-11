@@ -116,7 +116,7 @@ elif page == "2024년 국세 진도율":
         x=jittered_month,
         y=filtered_data['pro'],
         mode='markers',
-        marker=dict(color='rgba(107, 142, 35, 0.3)', size=10, line=dict(width=1, color='DarkSlateGrey')),
+        marker=dict(color='rgba(107, 142, 35, 0.3)', size=10, line=dict(width=0, color='DarkSlateGrey')),
         name='Observed'
     ))
 
